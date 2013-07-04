@@ -27,7 +27,8 @@ var app = {
         if(inflight) {
           console.log('currently logging milage');
           var template = Handlebars.compile($('#inflight-trip-tpl').html());
-          $('.app').html(templage());
+          $('.app').html(template());
+          $('#end-button').click(this.endClick);
 
         } else {
           var template = Handlebars.compile($("#start-trip-tpl").html());
@@ -68,16 +69,35 @@ var app = {
     startClick: function() {
       var m = $('#start-milage').val();
 
-      console.log(m);
+      console.log('entered milage: ' + m);
 
       $('#start-milage').val('');
       inflight = true;
 
       self.toggleInFlight();
     },
+    endClick: function() {
+      console.log('end clicked!');
+      inflight = false;
+      self.toggleInFlight();
+
+    },
     toggleInFlight: function() {
-       var template = Handlebars.compile($('#inflight-trip-tpl').html());
-       $('.app').html(template());
+      var template;
+      console.log('inflight: ' + inflight);
+      if(inflight) {
+        template = Handlebars.compile($('#inflight-trip-tpl').html());
+        $('.app').html(template());
+
+        $('#end-button').click(self.endClick); 
+      } else {
+        template = Handlebars.compile($('#start-trip-tpl').html());
+        $('.app').html(template());
+
+        $('#start-button').click(self.startClick);
+      }
+       
+       
        console.log('toggled!');
     }
 };
